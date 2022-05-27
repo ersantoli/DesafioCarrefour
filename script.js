@@ -5,7 +5,7 @@
 
 function abreURL() {
 
-
+//Declaração de Variaveis
     let produt = document.getElementById('produto').value;
     let semAcento = produt.normalize('NFD').replace(/[\u0300-\u036f]/g, "");
     var cep = document.getElementById("cep");
@@ -17,6 +17,9 @@ function abreURL() {
     }if(produt ===""){
         window.alert("Por favor Digite um Produto")
     }
+    
+     //1° fetch busca o nome da loja mais proxima
+
     if(cep.value !== "" && produt !=="" ){
 
     fetch(`https://mercado.carrefour.com.br/api/checkout/pub/regions?country=BRA&postalCode=${search}`)
@@ -24,16 +27,15 @@ function abreURL() {
             response.json()
         ).then((data) => {
             console.log("data: ");
-            cep.value = "";
-            //produt = "";
-            loja = data[0].sellers[1].id;
+            cep.value = ""; //zerando o valores do cep             
+            loja = data[0].sellers[1].id;// atribuindo o vendedor mais proximo a variavel loja
 
 
         });
 
 
 
-
+//Arrow function retorna todos os item daquela loja
     const getPosts = async () => {
         const response = await fetch(`https://mercado.carrefour.com.br/api/catalog_system/pub/products/search?fq=${loja}`)
         return response.json()
@@ -43,7 +45,7 @@ function abreURL() {
 
 
         const posts = await getPosts()
-        box.innerHTML = "";
+        box.innerHTML = "";//zera as ofertas para uma 2° consulta       
         const produtoForaDaApi = `<div class='resposta'><h1>Desculpe,Produto Não localizado</h1></div>`
         console.log("fetch 2:")
         console.log(posts)
@@ -74,7 +76,8 @@ function abreURL() {
          }
 
 
-//Se nao ela posta o que encontrou
+//Se não ela postar o a variavel  produtoForaDaApi,
+      //então finalmente ele posta o que encontrou
         box.innerHTML += postsTemplate
         
         
